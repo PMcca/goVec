@@ -1,11 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"goVec/vector"
+	vec "goVec/vector"
 )
 
-func getVec() vector.Vector {
-	v := vector.Vector3{vector.Vector2{3, 2}, 2}
+func getVec() vector.Vector3 {
+	v := vector.Vector3{4, 5, 6}
+	println(v.Dot(vec.Vector3{1, 2, 3}))
 	return v
 }
 func main() {
@@ -13,5 +16,6 @@ func main() {
 	// mag := v2.Magnitude()
 	// dir := v2.Direction()
 	// dot2 := v2.Dot(vector.Vector2{2.1, 7})
-	println("V2's values:", "")
+
+	fmt.Printf("%v", getVec())
 }
