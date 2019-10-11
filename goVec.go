@@ -2,18 +2,21 @@ package main
 
 import (
 	"fmt"
+	vec "goVec/vector"
+	"log"
+	"os"
+
+	"github.com/urfave/cli"
 )
 
-// func getVec() vector.Vector3 {
-// 	v := vector.Vector3{4, 5, 6}
-// 	println(v.Dot(vec.Vector3{1, 2, 3}))
-// 	return v
-// }
 func main() {
-	// v2 := vector.Vector2{2, 3}
-	// mag := v2.Magnitude()
-	// dir := v2.Direction()
-	// dot2 := v2.Dot(vector.Vector2{2.1, 7})
+	err := cli.NewApp().Run(os.Args)
+	if err != nil {
+		log.Fatal(err)
+	}
+	v := vec.NewVector2(3, 7)
+	fmt.Printf("Vector: %v\n Magnitude: %v\n Norm: %v\n", v, v.Magnitude(), v.Norm())
 
-	fmt.Printf("%v", getVec())
+	v2 := vec.NewVector2(8, 2)
+	fmt.Printf("v Dot product: %v", v.Dot(v2))
 }
