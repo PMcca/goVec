@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func cliSetup() *cli.App {
+func cliInit() *cli.App {
 	app := cli.NewApp()
 
 	app.Name = "GoVec"
@@ -22,16 +22,16 @@ func cliSetup() *cli.App {
 	}
 
 	app.Action = func(c *cli.Context) error {
-		name := "John"
-		arg := c.Args()
-		if len(arg) > 0 {
-			name = c.Args().Get(0)
+		args := c.Args()
+		if len(args) != 2 {
+			return cli.NewExitError("Not enough arguments. Provide two vectors of the form {x,y(,z)}", 1)
 		}
 
+
 		if c.Bool("dot") != false {
-			fmt.Println("Hola ", name)
+			fmt.Println("Dot product")
 		} else {
-			fmt.Println("Hello ", name)
+			fmt.Println("What?")
 		}
 
 		return nil
@@ -41,12 +41,13 @@ func cliSetup() *cli.App {
 }
 
 func main() {
-	app := cliSetup()
+	app := cliInit()
 
 	err := app.Run(os.Args)
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }
 
 //v := vec.NewVector2(3, 7)
