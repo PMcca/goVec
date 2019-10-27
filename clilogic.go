@@ -36,7 +36,7 @@ func cliActions(c *cli.Context) error {
 		}
 	}
 
-	if c.Bool("dot") != false {
+	if c.Bool("dot") {
 		fmt.Println("Dot product")
 	} else {
 		fmt.Println("What?")
