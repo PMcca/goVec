@@ -1,4 +1,4 @@
-module govec
+module vecc
 
 go 1.13
 
