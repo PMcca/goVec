@@ -13,6 +13,7 @@ func cliActions(c *cli.Context) error {
 	args := c.Args()
 	var vecs2 []v.Vector2
 	var vecs3 []v.Vector3
+	//vecs := make([]v.Vector, 2)
 
 	if len(args) == 4 { // 2D vectors
 		vecs2 = parseArgs2(args)
