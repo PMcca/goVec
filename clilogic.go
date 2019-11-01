@@ -4,41 +4,29 @@ import (
 	"fmt"
 	"github.com/urfave/cli"
 	"log"
-	"reflect"
 	"strconv"
 	v "vecc/vector"
 )
 
+const (
+	V2D = iota
+	V3D = iota
+)
+
+var vDim int
+
 func cliActions(c *cli.Context) error {
 	args := c.Args()
-	var vecs2 []v.Vector2
-	var vecs3 []v.Vector3
 	vecs := make([]v.Vector, 0)
+	var err error = nil
 
-	if len(args) == 4 { // 2D vectors
-		vecs2 = parseArgs2(args)
-
-	} else if len(args) == 6 { // 3D vectors
-		vecs3 = parseArgs3(args)
-
-	} else {
-		return cli.NewExitError("Wrong number of args- provide 4 numbers", 1)
-	}
-
-	if len(vecs2) != 0 {
-		for _, n := range vecs2 {
-			println(reflect.TypeOf(n).String())
-		}
-	}
-
-	if len(vecs3) > 0 {
-		for _, n := range vecs3 {
-			println(reflect.TypeOf(n).String())
-		}
+	vecs, err = parseArgs(args)
+	if err != nil {
+		return err
 	}
 
 	if c.Bool("dot") {
-		fmt.Println("Dot product")
+		fmt.Println(dot(vecs, vDim))
 	} else {
 		fmt.Println("What?")
 	}
@@ -46,42 +34,45 @@ func cliActions(c *cli.Context) error {
 	return nil
 }
 
-func parseArgs(arg []string) []v.Vector {
+func parseArgs(arg []string) ([]v.Vector, error) {
 	vecs := make([]v.Vector, 2)
-	if len(arg) == 4 {
-		vecs2 := parseArgs2(arg)
-		for i, vec := range vecs2 {
+	len := len(arg)
 
-		}
+	if len == 4 || len == 2 {
+		vecs = parseArgs2(arg)
+		vDim = V2D
+
+	} else if len == 3 || len == 6 {
+		vecs = parseArgs3(arg)
+		vDim = V3D
+
+	} else {
+		return nil, cli.NewExitError("Wrong number of args- provide 4 numbers", 1)
 	}
-	return vecs
+	return vecs, nil
 }
 
-func parseArgs2(arg []string, vecs *[]v.Vector) {
+func parseArgs2(arg []string) []v.Vector {
+	vecs := make([]v.Vector, 0)
 	for i := 0; i < len(arg); i += 2 {
 		x := parseFloat(arg[i])
 		y := parseFloat(arg[i+1])
 		v := v.NewVector2(x, y)
 		vecs = append(vecs, v)
 	}
-
-	x = parseFloat(arg[2])
-	y = parseFloat(arg[3])
-	v2 := v.NewVector2(x, y)
+	return vecs
 }
 
-func parseArgs3(arg []string) []v.Vector3 {
-	x := parseFloat(arg[0])
-	y := parseFloat(arg[1])
-	z := parseFloat(arg[2])
-	v1 := v.NewVector3(x, y, z)
-
-	x = parseFloat(arg[3])
-	y = parseFloat(arg[4])
-	z = parseFloat(arg[5])
-	v2 := v.NewVector3(x, y, z)
-
-	return []v.Vector3{v1, v2}
+func parseArgs3(arg []string) []v.Vector {
+	vecs := make([]v.Vector, 0)
+	for i := 0; i < len(arg); i += 3 {
+		x := parseFloat(arg[i])
+		y := parseFloat(arg[i+1])
+		z := parseFloat(arg[1+2])
+		v := v.NewVector3(x, y, z)
+		vecs = append(vecs, v)
+	}
+	return vecs
 }
 
 func parseFloat(s string) float64 {

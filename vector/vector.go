@@ -6,7 +6,6 @@ import (
 
 type Vector interface {
 	Magnitude() float64
-	Direction() float64
 }
 
 type Vector2 struct {
