@@ -73,8 +73,19 @@ func (v Vector3) Div(n float64) Vector3 { //TODO TEST
 	return Vector3{[3]float64{v.X() / n, v.Y() / n, v.Z() / n}}
 }
 
+func (v1 Vector3) Add(v2 Vector3) Vector3 { //TODO: TEST
+	return NewVector3(v1.X()+v2.X(), v1.Y()+v2.Y(), v1.Z()+v2.Z())
+}
+
 func (v1 Vector3) Dot(v2 Vector3) float64 {
 	return (v1.X() * v2.X()) + (v1.Y() * v2.Y()) + (v1.Z() * v2.Z())
+}
+
+func (a Vector3) Cross(b Vector3) Vector3 {
+	x := (a.Y() * b.Z()) - (a.Z() * b.Y())
+	y := (a.Z() * b.X()) - (a.X() * b.Z())
+	z := (a.X() * b.Y()) - (a.Y() * b.X())
+	return NewVector3(x, y, z)
 }
 
 func radToDeg(r float64) float64 {

@@ -25,10 +25,21 @@ func cliActions(c *cli.Context) error {
 		return err
 	}
 
+	var vRes v.Vector = nil // Hold results for stringing together operations
+
 	if c.Bool("dot") {
 		fmt.Println(dot(vecs, vDim))
-	} else {
-		fmt.Println("What?")
+		return nil
+	}
+
+	if c.Bool("cross") { //TODO: TEST
+		vRes = cross(vecs, vDim)
+	} else if c.Bool("add") { //TODO: TEST
+		vRes = add(vecs, vDim)
+	}
+
+	if vRes != nil {
+		fmt.Printf("%v", vRes)
 	}
 
 	return nil
@@ -67,8 +78,8 @@ func parseArgs3(arg []string) []v.Vector {
 	vecs := make([]v.Vector, 0)
 	for i := 0; i < len(arg); i += 3 {
 		x := parseFloat(arg[i])
-		y := parseFloat(arg[i+1])
-		z := parseFloat(arg[1+2])
+		y := parseFloat(arg[1+i])
+		z := parseFloat(arg[2+i])
 		v := v.NewVector3(x, y, z)
 		vecs = append(vecs, v)
 	}
