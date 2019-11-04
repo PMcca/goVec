@@ -18,6 +18,22 @@ func cliInit() *cli.App {
 			Name:  "dot, d",
 			Usage: "Dot Product between two vectors",
 		},
+		cli.BoolFlag{
+			Name:  "cross, c",
+			Usage: "Cross Product between two 3D vectors",
+		},
+		cli.BoolFlag{
+			Name:  "add, a",
+			Usage: "Add two equal-dimension vectors",
+		},
+		cli.BoolFlag{
+			Name:  "sub, s",
+			Usage: "Subtract two equal-dimesntion vectors",
+		},
+		cli.BoolFlag{
+			Name:  "norm, n",
+			Usage: "Normal of a vector",
+		},
 	}
 
 	app.Action = cliActions

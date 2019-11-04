@@ -5,7 +5,7 @@ import (
 	"github.com/urfave/cli"
 	"log"
 	"strconv"
-	v "vecc/vector"
+	vecc "vecc/vector"
 )
 
 const (
@@ -17,7 +17,7 @@ var vDim int
 
 func cliActions(c *cli.Context) error {
 	args := c.Args()
-	vecs := make([]v.Vector, 0)
+	vecs := make([]vecc.Vector, 0)
 	var err error = nil
 
 	vecs, err = parseArgs(args)
@@ -25,28 +25,34 @@ func cliActions(c *cli.Context) error {
 		return err
 	}
 
-	var vRes v.Vector = nil // Hold results for stringing together operations
+	var vRes vecc.Vector = nil // Hold results for stringing together operations
+
+	if len(args) == 1 {
+		vRes = vecs[0]
+	}
 
 	if c.Bool("dot") {
+
 		fmt.Println(dot(vecs, vDim))
 		return nil
 	}
-
 	if c.Bool("cross") { //TODO: TEST
 		vRes = cross(vecs, vDim)
 	} else if c.Bool("add") { //TODO: TEST
 		vRes = add(vecs, vDim)
+	} else if c.Bool("sub") { //TODO: TEST
+		vRes = sub(vecs, vDim)
 	}
-
 	if vRes != nil {
-		fmt.Printf("%v", vRes)
+
+		fmt.Print(printVector(vRes))
 	}
 
 	return nil
 }
 
-func parseArgs(arg []string) ([]v.Vector, error) {
-	vecs := make([]v.Vector, 2)
+func parseArgs(arg []string) ([]vecc.Vector, error) {
+	vecs := make([]vecc.Vector, 2)
 	len := len(arg)
 
 	if len == 4 || len == 2 {
@@ -63,24 +69,24 @@ func parseArgs(arg []string) ([]v.Vector, error) {
 	return vecs, nil
 }
 
-func parseArgs2(arg []string) []v.Vector {
-	vecs := make([]v.Vector, 0)
+func parseArgs2(arg []string) []vecc.Vector {
+	vecs := make([]vecc.Vector, 0)
 	for i := 0; i < len(arg); i += 2 {
 		x := parseFloat(arg[i])
 		y := parseFloat(arg[i+1])
-		v := v.NewVector2(x, y)
+		v := vecc.NewVector2(x, y)
 		vecs = append(vecs, v)
 	}
 	return vecs
 }
 
-func parseArgs3(arg []string) []v.Vector {
-	vecs := make([]v.Vector, 0)
+func parseArgs3(arg []string) []vecc.Vector {
+	vecs := make([]vecc.Vector, 0)
 	for i := 0; i < len(arg); i += 3 {
 		x := parseFloat(arg[i])
 		y := parseFloat(arg[1+i])
 		z := parseFloat(arg[2+i])
-		v := v.NewVector3(x, y, z)
+		v := vecc.NewVector3(x, y, z)
 		vecs = append(vecs, v)
 	}
 	return vecs
@@ -92,4 +98,13 @@ func parseFloat(s string) float64 {
 		log.Fatal(fmt.Sprintf("Error parsing %s as float", s))
 	}
 	return c
+}
+
+func printVector(v vecc.Vector) string { //TODO: Format with equal spaced braces
+	if vDim == V2D {
+		return fmt.Sprintf("[%f]\n[%f]", fmtFloat(v.X()), fmtFloat(v.Y()))
+	} else {
+		v3 := v.(vecc.Vector3)
+		return fmt.Sprintf("[%s]\n|%s|\n[%s]", fmtFloat(v3.X()), fmtFloat(v3.Y()), fmtFloat(v3.Z()))
+	}
 }

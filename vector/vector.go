@@ -6,6 +6,8 @@ import (
 
 type Vector interface {
 	Magnitude() float64
+	X() float64
+	Y() float64
 }
 
 type Vector2 struct {
@@ -75,6 +77,10 @@ func (v Vector3) Div(n float64) Vector3 { //TODO TEST
 
 func (v1 Vector3) Add(v2 Vector3) Vector3 { //TODO: TEST
 	return NewVector3(v1.X()+v2.X(), v1.Y()+v2.Y(), v1.Z()+v2.Z())
+}
+
+func (v1 Vector3) Sub(v2 Vector3) Vector3 { //TODO: TEST
+	return NewVector3(v1.X()-v2.X(), v1.Y()-v2.Y(), v1.Z()-v2.Z())
 }
 
 func (v1 Vector3) Dot(v2 Vector3) float64 {

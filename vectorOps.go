@@ -1,12 +1,16 @@
 package main
 
 import (
+	"github.com/urfave/cli"
 	"log"
 	"strconv"
 	vecc "vecc/vector"
 )
 
-func dot(v []vecc.Vector, dim int) string {
+func dot(v []vecc.Vector, dim int) (string, error) {
+	if len(v) < 2 {
+		return "", cli.NewExitError("Error- One vector given for dot product- Requires 2.", 1) //TODO: TEST!!!!!
+	}
 	var r string
 	switch dim {
 	case V2D:
@@ -16,9 +20,9 @@ func dot(v []vecc.Vector, dim int) string {
 		r = fmtFloat(v[0].(vecc.Vector3).Dot(v[1].(vecc.Vector3)))
 		break
 	default:
-		log.Fatal("Error printing dot product.")
+		return "", cli.NewExitError("Error printing dot product.", 1)
 	}
-	return r
+	return r, nil
 }
 
 func cross(v []vecc.Vector, dim int) vecc.Vector3 {
@@ -37,6 +41,21 @@ func add(v []vecc.Vector, dim int) vecc.Vector {
 		break
 	case V3D:
 		r = v[0].(vecc.Vector3).Add(v[1].(vecc.Vector3))
+		break
+	default:
+		log.Fatal("Error adding vectors.") //TODO: Return error instead?
+	}
+	return r
+}
+
+func sub(v []vecc.Vector, dim int) vecc.Vector {
+	var r vecc.Vector
+	switch dim {
+	case V2D:
+		r = v[0].(vecc.Vector2).Sub(v[1].(vecc.Vector2))
+		break
+	case V3D:
+		r = v[0].(vecc.Vector3).Sub(v[1].(vecc.Vector3))
 		break
 	default:
 		log.Fatal("Error adding vectors.") //TODO: Return error instead?
