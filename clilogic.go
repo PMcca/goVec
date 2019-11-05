@@ -58,6 +58,10 @@ func cliActions(c *cli.Context) error {
 			if err != nil {
 				return err
 			}
+			if c.Bool("mag") {
+				println(fmtFloat(vRes.Magnitude()))
+				return nil
+			}
 		}
 		fmt.Print(printVector(vRes))
 	} else {
@@ -80,7 +84,7 @@ func parseArgs(arg []string) ([]vecc.Vector, error) {
 		vDim = V3D
 
 	} else {
-		return nil, cli.NewExitError("Wrong number of args- provide 4 numbers", 1)
+		return nil, cli.NewExitError("Wrong number of args- provide one or two 2D/3D vectors", 1)
 	}
 	return vecs, nil
 }

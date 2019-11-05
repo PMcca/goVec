@@ -34,6 +34,10 @@ func cliInit() *cli.App {
 			Name:  "norm, n",
 			Usage: "Normal of a vector",
 		},
+		cli.BoolFlag{
+			Name:  "mag, m",
+			Usage: "Magnitude of a vector",
+		},
 	}
 
 	app.Action = cliActions

@@ -89,6 +89,10 @@ func norm(v vecc.Vector, dim int) (vecc.Vector, error) {
 	return r, nil
 }
 
+func mag(v vecc.Vector, dim int) float64 {
+	return v.Magnitude()
+}
+
 func fmtFloat(f float64) string {
 	return strconv.FormatFloat(f, 'f', -1, 64)
 }
