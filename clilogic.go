@@ -27,25 +27,41 @@ func cliActions(c *cli.Context) error {
 
 	var vRes vecc.Vector = nil // Hold results for stringing together operations
 
-	if len(args) == 1 {
+	if len(args) == 1 { // Single vector
 		vRes = vecs[0]
 	}
 
 	if c.Bool("dot") {
-
-		fmt.Println(dot(vecs, vDim))
+		d, err := dot(vecs, vDim)
+		if err != nil {
+			return err
+		}
+		fmt.Println(d)
 		return nil
 	}
-	if c.Bool("cross") { //TODO: TEST
-		vRes = cross(vecs, vDim)
-	} else if c.Bool("add") { //TODO: TEST
-		vRes = add(vecs, vDim)
-	} else if c.Bool("sub") { //TODO: TEST
-		vRes = sub(vecs, vDim)
-	}
-	if vRes != nil {
 
+	if c.Bool("cross") { //TODO: TEST
+		vRes, err = cross(vecs, vDim)
+	} else if c.Bool("add") { //TODO: TEST
+		vRes, err = add(vecs, vDim)
+	} else if c.Bool("sub") { //TODO: TEST
+		vRes, err = sub(vecs, vDim)
+	}
+
+	if err != nil {
+		return err
+	}
+
+	if vRes != nil { //vRes should not be null here
+		if c.Bool("norm") {
+			vRes, err = norm(vRes, vDim)
+			if err != nil {
+				return err
+			}
+		}
 		fmt.Print(printVector(vRes))
+	} else {
+		return cli.NewExitError("Error- no operations given. Type -h or --help for usage.", 1)
 	}
 
 	return nil
@@ -102,7 +118,7 @@ func parseFloat(s string) float64 {
 
 func printVector(v vecc.Vector) string { //TODO: Format with equal spaced braces
 	if vDim == V2D {
-		return fmt.Sprintf("[%f]\n[%f]", fmtFloat(v.X()), fmtFloat(v.Y()))
+		return fmt.Sprintf("[%s]\n[%s]", fmtFloat(v.X()), fmtFloat(v.Y()))
 	} else {
 		v3 := v.(vecc.Vector3)
 		return fmt.Sprintf("[%s]\n|%s|\n[%s]", fmtFloat(v3.X()), fmtFloat(v3.Y()), fmtFloat(v3.Z()))

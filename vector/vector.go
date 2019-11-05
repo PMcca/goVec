@@ -94,6 +94,10 @@ func (a Vector3) Cross(b Vector3) Vector3 {
 	return NewVector3(x, y, z)
 }
 
+func EmptyVector2() Vector2 { return Vector2{} }
+
+func EmptyVector3() Vector3 { return Vector3{} }
+
 func radToDeg(r float64) float64 {
 	return r * (180 / math.Pi)
 }
