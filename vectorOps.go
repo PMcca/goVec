@@ -27,7 +27,7 @@ func dot(v []vecc.Vector, dim int) (string, error) {
 
 func cross(v []vecc.Vector, dim int) (vecc.Vector3, error) {
 	if len(v) < 2 {
-		return vecc.EmptyVector3(), cli.NewExitError("Error- One vector given for cross product- Requires 2.", 1) //TODO: TEST!!!!!
+		return vecc.Vector3{}, cli.NewExitError("Error- One vector given for cross product- Requires 2.", 1) //TODO: TEST!!!!!
 	}
 
 	if vDim != V3D {
@@ -39,7 +39,7 @@ func cross(v []vecc.Vector, dim int) (vecc.Vector3, error) {
 
 func add(v []vecc.Vector, dim int) (vecc.Vector, error) {
 	if len(v) < 2 {
-		return vecc.EmptyVector3(), cli.NewExitError("Error- One vector given for add product- Requires 2.", 1) //TODO: TEST!!!!!
+		return vecc.Vector3{}, cli.NewExitError("Error- One vector given for add product- Requires 2.", 1) //TODO: TEST!!!!!
 	}
 	var r vecc.Vector
 	switch dim {
@@ -57,7 +57,7 @@ func add(v []vecc.Vector, dim int) (vecc.Vector, error) {
 
 func sub(v []vecc.Vector, dim int) (vecc.Vector, error) {
 	if len(v) < 2 {
-		return vecc.EmptyVector3(), cli.NewExitError("Error- One vector given for subtract product- Requires 2.", 1) //TODO: TEST!!!!!
+		return vecc.Vector3{}, cli.NewExitError("Error- One vector given for subtract product- Requires 2.", 1) //TODO: TEST!!!!!
 	}
 	var r vecc.Vector
 	switch dim {
@@ -83,7 +83,7 @@ func norm(v vecc.Vector, dim int) (vecc.Vector, error) {
 		r = v.(vecc.Vector3).Norm()
 		break
 	default:
-		return vecc.EmptyVector3(), cli.NewExitError("Error with vector dimension in Norm.", 1) //TODO: TEST!!!!!
+		return vecc.Vector3{}, cli.NewExitError("Error with vector dimension in Norm.", 1) //TODO: TEST!!!!!
 	}
 
 	return r, nil

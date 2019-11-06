@@ -6,6 +6,7 @@ import (
 
 type Vector interface {
 	Magnitude() float64
+	Norm() Vector
 	X() float64
 	Y() float64
 }
@@ -42,7 +43,7 @@ func (v Vector2) Direction() float64 {
 	return math.Atan(v.Y() / v.X())
 }
 
-func (v Vector2) Norm() Vector2 { //TODO: TEST
+func (v Vector2) Norm() Vector { //TODO: TEST
 	return v.Div(v.Magnitude())
 }
 
@@ -67,7 +68,7 @@ func (v Vector3) Magnitude() float64 {
 	return math.Sqrt(math.Pow(v.X(), 2) + math.Pow(v.Y(), 2) + math.Pow(v.Z(), 2))
 }
 
-func (v Vector3) Norm() Vector3 { //TODO: TEST
+func (v Vector3) Norm() Vector { //TODO: TEST
 	return v.Div(v.Magnitude())
 }
 
@@ -93,10 +94,6 @@ func (a Vector3) Cross(b Vector3) Vector3 {
 	z := (a.X() * b.Y()) - (a.Y() * b.X())
 	return NewVector3(x, y, z)
 }
-
-func EmptyVector2() Vector2 { return Vector2{} }
-
-func EmptyVector3() Vector3 { return Vector3{} }
 
 func radToDeg(r float64) float64 {
 	return r * (180 / math.Pi)

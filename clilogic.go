@@ -27,7 +27,7 @@ func cliActions(c *cli.Context) error {
 
 	var vRes vecc.Vector = nil // Hold results for stringing together operations
 
-	if len(args) == 1 { // Single vector
+	if len(vecs) == 1 { // Single vector
 		vRes = vecs[0]
 	}
 
