@@ -23,3 +23,13 @@ func TestParses3dVectors(t *testing.T) {
 
 	assert.Equal(t, want, got)
 }
+
+func TestReturnsLongestDigit(t *testing.T) {
+	//given := vec.NewVector3(1, 2.3, 3456)
+	given := vec.NewVector2(2.3, 3456)
+	want := 4
+
+	got := digitLength(given)
+
+	assert.Equal(t, want, got)
+}

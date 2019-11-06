@@ -128,3 +128,20 @@ func printVector(v vecc.Vector) string { //TODO: Format with equal spaced braces
 		return fmt.Sprintf("[%s]\n|%s|\n[%s]", fmtFloat(v3.X()), fmtFloat(v3.Y()), fmtFloat(v3.Z()))
 	}
 }
+
+func digitLength(v vecc.Vector) (r int) {
+	nums := []string{fmtFloat(v.X()), fmtFloat(v.Y())}
+
+	switch v.(type) {
+	case vecc.Vector3:
+		nums = append(nums, fmtFloat(v.(vecc.Vector3).Z()))
+	}
+
+	for _, num := range nums {
+		c := len(num)
+		if c > r {
+			r = c
+		}
+	}
+	return r
+}

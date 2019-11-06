@@ -12,11 +12,11 @@ func dot(v []vecc.Vector, dim int) (string, error) {
 		return "", cli.NewExitError("Error- One vector given for dot product- Requires 2.", 1) //TODO: TEST!!!!!
 	}
 	var r string
-	switch dim {
-	case V2D:
+	switch v[0].(type) {
+	case vecc.Vector2:
 		r = fmtFloat(v[0].(vecc.Vector2).Dot(v[1].(vecc.Vector2)))
 		break
-	case V3D:
+	case vecc.Vector3:
 		r = fmtFloat(v[0].(vecc.Vector3).Dot(v[1].(vecc.Vector3)))
 		break
 	default:
@@ -30,11 +30,13 @@ func cross(v []vecc.Vector, dim int) (vecc.Vector3, error) {
 		return vecc.Vector3{}, cli.NewExitError("Error- One vector given for cross product- Requires 2.", 1) //TODO: TEST!!!!!
 	}
 
-	if vDim != V3D {
-		log.Fatal("Error- No 3D vectors given for Cross Product.")
-	}
+	switch v[0].(type) {
+	case vecc.Vector3:
+		return v[0].(vecc.Vector3).Cross(v[1].(vecc.Vector3)), nil
 
-	return v[0].(vecc.Vector3).Cross(v[1].(vecc.Vector3)), nil
+	default:
+		return vecc.Vector3{}, cli.NewExitError("Error- Vectors must be 3D for cross product.", 1)
+	}
 }
 
 func add(v []vecc.Vector, dim int) (vecc.Vector, error) {
@@ -42,11 +44,11 @@ func add(v []vecc.Vector, dim int) (vecc.Vector, error) {
 		return vecc.Vector3{}, cli.NewExitError("Error- One vector given for add product- Requires 2.", 1) //TODO: TEST!!!!!
 	}
 	var r vecc.Vector
-	switch dim {
-	case V2D:
+	switch v[0].(type) {
+	case vecc.Vector2:
 		r = v[0].(vecc.Vector2).Add(v[1].(vecc.Vector2))
 		break
-	case V3D:
+	case vecc.Vector3:
 		r = v[0].(vecc.Vector3).Add(v[1].(vecc.Vector3))
 		break
 	default:
@@ -60,11 +62,11 @@ func sub(v []vecc.Vector, dim int) (vecc.Vector, error) {
 		return vecc.Vector3{}, cli.NewExitError("Error- One vector given for subtract product- Requires 2.", 1) //TODO: TEST!!!!!
 	}
 	var r vecc.Vector
-	switch dim {
-	case V2D:
+	switch v[0].(type) {
+	case vecc.Vector2:
 		r = v[0].(vecc.Vector2).Sub(v[1].(vecc.Vector2))
 		break
-	case V3D:
+	case vecc.Vector3:
 		r = v[0].(vecc.Vector3).Sub(v[1].(vecc.Vector3))
 		break
 	default:
@@ -75,11 +77,11 @@ func sub(v []vecc.Vector, dim int) (vecc.Vector, error) {
 
 func norm(v vecc.Vector, dim int) (vecc.Vector, error) {
 	var r vecc.Vector
-	switch dim {
-	case V2D:
+	switch v.(type) {
+	case vecc.Vector2:
 		r = v.(vecc.Vector2).Norm()
 		break
-	case V3D:
+	case vecc.Vector3:
 		r = v.(vecc.Vector3).Norm()
 		break
 	default:
@@ -87,10 +89,6 @@ func norm(v vecc.Vector, dim int) (vecc.Vector, error) {
 	}
 
 	return r, nil
-}
-
-func mag(v vecc.Vector, dim int) float64 {
-	return v.Magnitude()
 }
 
 func fmtFloat(f float64) string {
