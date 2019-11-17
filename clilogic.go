@@ -58,14 +58,15 @@ func cliActions(c *cli.Context) error {
 			if err != nil {
 				return err
 			}
-			if c.Bool("mag") {
-				println(fmtFloat(vRes.Magnitude()))
-				return nil
-			}
+		}
+
+		if c.Bool("mag") {
+			println(fmtFloat(vRes.Magnitude()))
+			return nil
 		}
 		fmt.Print(printVector(vRes))
 	} else {
-		return cli.NewExitError("Error- no operations given. Type -h or --help for usage.", 1)
+		return cli.NewExitError("Error- Type -h or --help for usage.", 1)
 	}
 
 	return nil
